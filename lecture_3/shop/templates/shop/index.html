@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>Index page</title>
+    </head>
+    <body>
+        <form action="/products/" method="POST">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="field-wrapper">
+                        {{ field.label_tag }} {{ field }}
+                        {% if field.errors|length > 0 %}
+                            <div class="text-danger">
+                                {{ field.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+            {% endfor %}
+            <div>
+                <button type="submit">Create Product</button>
+            </div>
+        </form>
+        <h1>Products</h1>
+        {% if error|length %}
+            <p style="color: red;">{{error}}</p>
+        {% endif %}
+        {% if products|length > 0 %}
+            <ol>
+            {% for product in products %}
+                <li>{{ product.name }} -- {{ product.price }} KZT <a href="/products/{{product.id}}/delete">
+                    <button>Delete</button>
+                </a>
+                </li>
+            {% endfor %}
+            </ol>
+        {% else %}
+            <p>Products Not Found</p>
+        {% endif %}
+    </body>
+</html>
