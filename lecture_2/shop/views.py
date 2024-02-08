@@ -4,7 +4,7 @@ from .models import Product
 
 def get_ingex_page(request):
     products = Product.objects.all()
-    return render(request, 'shop/index.html', {'products': products})
+    return render(request, 'products.html', {'products': products})
 
 
 def get_product_details(request, pk):
