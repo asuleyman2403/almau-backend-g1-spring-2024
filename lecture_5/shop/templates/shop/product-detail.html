@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Products page</title>
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'header.html' %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% for msg in messages %}
+            <p style="color: red;">{{msg}}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ product.name }}</h1>
+            <h5>{{ product.name }}</h5>
+            <h5>{{ product.amount }}</h5>
+            <h5>{{ product.price }} KZT</h5>
+            <p>{{ product.description }}</p>
+            <a href="{% url 'edit_product' pk=product.id %}">
+                <button class="btn btn-outline-primary">Edit product</button>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

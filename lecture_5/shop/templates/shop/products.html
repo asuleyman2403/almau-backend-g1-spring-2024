@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Products page</title>
+<style>
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'header.html' %}
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            {% for msg in messages %}
+            <p style="color: red;">{{msg}}</p>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <form action="{% url 'products' %}" method="POST" class="my-4">
+                {% csrf_token %}
+                {% for field in form %}
+                    {% if field.name != 'category' %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ field.auto_id }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors|length > 0 %}
+                        <div class="text-danger">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+                <label class="form-label" for="category_id">Categories</label>
+                <select class="form-select mb-2" name="category" aria-label="Category" id="category_id">
+                    {% for category in categories %}
+                        <option value="{{category.id}}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-success" type="submit">Create Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1>Products</h1>
+        </div>
+        {% if products|length > 0 %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }} KZT</td>
+                <td>{{ product.amount }}</td>
+                <td>
+                    <a href="{% url 'product_details' pk=product.id %}">
+                        <button class="btn btn-outline-primary">See details</button>
+                    </a>
+                    <a href="{% url 'delete_product_page' pk=product.id %}">
+                        <button class="btn btn-danger">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        {% else %}
+        <div class="col-12">
+            <p>Products Not Found</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
